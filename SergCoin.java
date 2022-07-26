@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class Test4{
+public class SergCoin{
 
       JFrame frame;       
       JPanel Login;
@@ -33,9 +33,10 @@ public class Test4{
       File file;
       FileWriter fw;
       BufferedWriter writer;
+      ImageIcon img;
     
 
-//These variables are going to be used when creating an account or 
+//These variables are going to be used when creating an account and the user's accounts
 String username = "";
 String password = "";
 String firstname = "";
@@ -48,9 +49,8 @@ String total = "";
 public void Menu() throws IOException{
   File[] files = new File("/Users/sergi/OneDrive/Documents/Accounts").listFiles();
     frame = new JFrame("SergCoin");   
-    ImageIcon img = new ImageIcon("C:/Users/sergi/OneDrive/Pictures/Smile.jpeg");
+    img = new ImageIcon("C:/Users/sergi/OneDrive/Pictures/Smile.jpeg");//This is where the icon comes from
     frame.setIconImage(img.getImage());
-
     Login = new JPanel();
     Account = new JPanel();
     Text = new JPanel();
@@ -58,21 +58,19 @@ public void Menu() throws IOException{
     passwordlb = new JLabel("Enter Password: ");
     AccountLabel = new JLabel("Create Account: ");
     tx = new JLabel("Login or Create New Account");
+    //This is how the label gets its font
     usernamelb.setFont(new Font("Arial", Font.BOLD, 14));
     passwordlb.setFont(new Font("Arial", Font.BOLD, 14));
-
     tx.setFont(new Font("Calibri", Font.BOLD, 18));
-//Verdana Font.PLAIN
     tf2 = new JTextField(10);
-    //makes the text look password protected even though its not
+    //makes the text look password protected
     tf3 = new JPasswordField(10);
     LoginButton = new JButton("Enter");
     CreateButton = new JButton("Create");
-
-
-
+    //Basically when the top right corner of x is pressed, the window (GUI) is closed
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(580,210);// width: 300 height: 300
+
+        frame.setSize(580,210);
         //makes sure that the frame cant be changed
         frame.setResizable(false);
         tf3.setEchoChar('$');
@@ -85,107 +83,92 @@ public void Menu() throws IOException{
         Account.add(CreateButton);
         Text.add(tx);
 
-        LoginButton.addActionListener(new ActionListener(){
+        LoginButton.addActionListener(new ActionListener(){//This is the start of what the login button does
             public void actionPerformed(ActionEvent e){
-        String name = tf2.getText();
-        String pass = new String(tf3.getPassword());
+        String name = tf2.getText();//This is where the user enters their username
+        String pass = new String(tf3.getPassword());//This is where the user enters their password
         try{
-        if(files.length<1){//ls.size()<1 && ls.size()<1
+        if(files.length<1){//Checks wether there are files inside the directory
             System.out.println(files.length);
             usernamelb.setText("Invalid name");
             passwordlb.setText("Invalid password");
         }
       }
-      catch(Exception e1){
-        //e1.printStackTrace();
-        //System.out.print("File doesn't exist");
+      catch(Exception e1){//This catches the specific error and gives this message
+        System.out.println("There are no files yet...");
       }
-      //System.out.println("Its now "+files.length);
-        for(int i = 0;i<files.length;i++){
+
+        for(int i = 0;i<files.length;i++){//If there are files in the directory then the proccess below runs
           
           try {
-            
+            ///The first and second line of the text file is the username and password
             String username = Files.readAllLines(Paths.get("/Users/sergi/OneDrive/Documents/Accounts/"+files[i].getName())).get(0);
             String password = Files.readAllLines(Paths.get("/Users/sergi/OneDrive/Documents/Accounts/"+files[i].getName())).get(1);
             if(!username.equals(name)){//it checks the first element first, which is the reason why it says invalid name even though its not
                 usernamelb.setText("Invalid name");
-                //break;
             }
             else if(!password.equals(pass)){
                 passwordlb.setText("Invalid password");
-                //break;
             }
             else if(username.equals(name) && password.equals(pass)){
               
                 frame.setVisible(false);
                 System.out.print("true");
-                //logger = ls.get(i);/////////////////////////////////////////////
-               //make a global var for the file
+                //If there is an account that uses the username and password the user entered then it sets the location
+                //of the file(account) to variable below
                txtfile = "/Users/sergi/OneDrive/Documents/Accounts/"+files[i].getName();//+".txt"
                 Account();
                 
             }
           } catch (Exception e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
             
 
           }
-          
-            //    
+            
         }
         
     
     }//this is bracket that is at the end of the button bracket
 });
 
-CreateButton.addActionListener(new ActionListener(){
+CreateButton.addActionListener(new ActionListener(){// The start of the Create Button
     public void actionPerformed(ActionEvent e){
 frame.setVisible(false);
-//add the create account method here
 try {
-  CreateAccount();
+  CreateAccount();//Once pressed the CreateAccount method runs
 } catch (IOException e1) {
-  // TODO Auto-generated catch block
   e1.printStackTrace();
 }
 
     }
-});
-   frame.getContentPane().add(BorderLayout.WEST,Login);//.setBackground(Color.RED);//it was in WEST
-    frame.getContentPane().add(BorderLayout.SOUTH,Account);//.setBackground(Color.RED);//SOUTH
-    frame.getContentPane().add(BorderLayout.NORTH, Text);//.setBackground(Color.RED);
+});//End of the Create Button
+   frame.getContentPane().add(BorderLayout.WEST,Login);
+    frame.getContentPane().add(BorderLayout.SOUTH,Account);
+    frame.getContentPane().add(BorderLayout.NORTH, Text);
     frame.setVisible(true);
-    //For the BorderLayout there are options like CENTER, NORTH, SOUTH, LINE_START, LINE_END, 
 }
 //======================================================================
-  //Work on this method
 public  void CreateAccount() throws IOException{
   File[] files = new File("/Users/sergi/OneDrive/Documents/Accounts").listFiles();
     frame = new JFrame("Creating Account...");
-    ImageIcon img = new ImageIcon("C:/Users/sergi/OneDrive/Pictures/Smile.jpeg");
+    img = new ImageIcon("C:/Users/sergi/OneDrive/Pictures/Smile.jpeg");
     frame.setIconImage(img.getImage());
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(590,210);
         frame.setResizable(false);
-        
-        //Account = new JPanel();
         JPanel Username = new JPanel();
         JPanel Password = new JPanel();
         JPanel Button = new JPanel();//This button panel contains the back and the create button
         BackButton = new JButton("MENU");
         JButton create = new JButton("Next");
-        usernamelb = new JLabel("<html>Create Username:<br/></html>");//I dont need to leave the html stuff there
+        usernamelb = new JLabel("<html>Create Username:<br/></html>");
         passwordlb = new JLabel("Create password:");
-
         usernamelb.setFont(new Font("Arial", Font.BOLD, 14));
         passwordlb.setFont(new Font("Arial", Font.BOLD, 14));
 
         tf2 = new JTextField(10);
         tf4 = new JTextField(10);
-
-  //This is something that I just have learned
-  // "<html> ... <br/> ...</html>" the text right after the <br/> will be in the next line
         
         Button.add(BackButton);
         Button.add(create);
@@ -193,11 +176,10 @@ public  void CreateAccount() throws IOException{
         Username.add(usernamelb);
         Username.add(tf2);
         Password.add(passwordlb);
-        Password.add(tf4);//it used to say tf3
+        Password.add(tf4);
 
-        
 
-create.addActionListener(new ActionListener(){
+create.addActionListener(new ActionListener(){//This is the start of the create button
     public void actionPerformed(ActionEvent e){
        
 //There are a total of 6 things the user must enter
@@ -212,18 +194,17 @@ create.addActionListener(new ActionListener(){
 */
 //Need to make an counter variable, starts from 1 to 3
 //The username and password will be its own pair,just like firstname and last name, and gmail and account total
-
 String name = tf2.getText();
-    String pass =  tf4.getText();
+String pass =  tf4.getText();
 
 try {
-//--------------
+//----------------------------
 if(getCounter()==1){
     
 int count = 1;
 for(int i =0;i<files.length;i++){
   
-
+//Checks wether the username has already been used by a different account
     String line = Files.readAllLines(Paths.get("/Users/sergi/OneDrive/Documents/Accounts/"+files[i].getName())).get(0);
     if(line.equals(name) || name.length()<1){//In here use the method of getting the name from the specific line
       usernamelb.setText("Invalid Name");
@@ -236,7 +217,7 @@ for(int i =0;i<files.length;i++){
     
 if(count == 1){  
     if(pass.length()>0){
-        Counter();//count is now 2
+        Counter();
 
 
         username = name;
@@ -254,11 +235,11 @@ if(count == 1){
         passwordlb.setText("Invalid Password");
     }
     }
-}//--------------
+}//---------------------
 
 
 //Start of counter 2
-if(getCounter()==2){
+if(getCounter()==2){//Users gets asked about names
 System.out.println("This is getCounter 2 now...");
 
 usernamelb.setText("Enter Firstname: ");
@@ -266,7 +247,7 @@ passwordlb.setText("Enter Lastname: ");
 tf2.setText("");
 tf4.setText("");
 
-
+//checks wehter the user added anything at all
 if(name.length()!=0 && pass.length()!=0){
 
 firstname = name;
@@ -303,6 +284,7 @@ try{
   }
 
 }
+//If the user doesnt enter a number, then the following message is displayed
 catch(NumberFormatException e1){
   passwordlb.setText("Invalid Total: ");
   count = 0;
@@ -310,9 +292,7 @@ catch(NumberFormatException e1){
 
 
 
-
-
-if(count==1){
+if(count==1){//Once everything is done the following below runs
 gmail = name;
 total = pass;
 System.out.println(gmail);
@@ -336,12 +316,10 @@ usernamelb.setFont(new Font("Calibri", Font.BOLD, 40));
 
 
 if(getCounter()==4){
-//ls.add(info);///////////////////////////////////////This right here is what I have
-//To replace, This is where I have to reset the variables and add to the file(thats when it creates)
-file = new File("/Users/sergi/OneDrive/Documents/Accounts/"+username+".txt");
 
+file = new File("/Users/sergi/OneDrive/Documents/Accounts/"+username+".txt");
+//All the information that the user has entered is written into the new text file, that file is basically his account
   fw = new FileWriter(file);
-//You need to add the true part to add to the file instead of replacing
 writer = new BufferedWriter(fw);
 writer.write(username);
 writer.newLine();
@@ -395,7 +373,6 @@ BackButton.addActionListener(new ActionListener(){
         try {
           Menu();
         } catch (IOException e1) {
-          // TODO Auto-generated catch block
           e1.printStackTrace();
         }
 
@@ -414,7 +391,7 @@ BackButton.addActionListener(new ActionListener(){
 public void Account() throws IOException{
 
 frame = new JFrame("Your Account");
-ImageIcon img = new ImageIcon("C:/Users/sergi/OneDrive/Pictures/Smile.jpeg");
+img = new ImageIcon("C:/Users/sergi/OneDrive/Pictures/Smile.jpeg");
     frame.setIconImage(img.getImage());
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(590,210);
@@ -448,12 +425,15 @@ ImageIcon img = new ImageIcon("C:/Users/sergi/OneDrive/Pictures/Smile.jpeg");
       Back.setVisible(false);
     Enter.setVisible(false);
     tf2.setVisible(false);
+    //These variables access each line of the user text file (account), since each line represents certian information
     username = Files.readAllLines(Paths.get(txtfile)).get(0);
         password = Files.readAllLines(Paths.get(txtfile)).get(1);
         firstname = Files.readAllLines(Paths.get(txtfile)).get(2);
         lastname = Files.readAllLines(Paths.get(txtfile)).get(3);
         gmail = Files.readAllLines(Paths.get(txtfile)).get(4);
         total = Files.readAllLines(Paths.get(txtfile)).get(5);
+
+//The withdrawl, deposit, back and check button basically displays their screens. Doesn't do much
 
 Withdrawl.addActionListener(new ActionListener(){
     public void actionPerformed(ActionEvent e){
@@ -495,13 +475,7 @@ Check.addActionListener(new ActionListener(){
     Withdrawl.setVisible(false);
     Deposit.setVisible(false);
     Check.setVisible(false);
-    /*
-    tx.setMinimumSize(new Dimension(100,100));
-    tx.setPreferredSize(new Dimension(100, 200));
-    tx.setMaximumSize(new Dimension(100, 200));
-    tx.setText("<html>Your balance is:<br/>$"+logger.getTotal());
-    */
-    //This might be important when placing the text in the screen in a specific spot
+
 try {
   if(Integer.parseInt(total)<=0){
     tx.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -515,7 +489,6 @@ try {
     System.out.print("Check works");
           }
 } catch (NumberFormatException e1) {
-  //e1.printStackTrace();
   System.out.println("SOMETHINGS Not working");
 
 }
@@ -537,14 +510,12 @@ Back.addActionListener(new ActionListener(){
     }
 });
   
-menu.addActionListener(new ActionListener(){
+menu.addActionListener(new ActionListener(){//Once pressed, then the Menu method runs again
     public void actionPerformed(ActionEvent e){
-    //frame.setVisible(false);
     frame.dispose();
   try {
     Menu();
   } catch (IOException e1) {
-    // TODO Auto-generated catch block
     e1.printStackTrace();
   }
     }
@@ -559,7 +530,6 @@ Enter.addActionListener(new ActionListener(){
     fw = new FileWriter(file);
   writer = new BufferedWriter(fw);
         } catch (IOException e2) {
-          //e2.printStackTrace();
           System.out.print("There's a problem with the file ( might be empty ) ");
         }
         
@@ -715,7 +685,7 @@ public void setCounter(int num){
     count = num;
 }
     public static void main(String[]args) throws IOException{
-        Test4 bank = new Test4();
+        SergCoin bank = new SergCoin();
 
 
       bank.Menu();
